@@ -1,7 +1,9 @@
 package day49_lambda_functional_programming;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Fp01 {
     /*
@@ -39,6 +41,13 @@ public class Fp01 {
         tekrarsizTekElemanlarinKupunuYazdir(liste);
         System.out.println();
         tekrarsizCiftElemanlarinKareToplami(liste);
+        tekrarsizCiftElemanlarinKupununCarpimi(liste);
+        getMaxEleman(liste);
+        getMaxEleman(liste);
+        getYedidenBuyukCiftMin(liste);
+        getYedidenBuyukCiftMin2(liste);
+        getYedidenBuyukCiftMin3(liste);
+        getTersSiralamaIleTekrarsizElemanlariYazdir(liste);
 
 
 
@@ -115,9 +124,69 @@ public class Fp01 {
 
         System.out.println(toplam);
 
+    }
+
+    //6) Tekrarsız çift elemanların küpünün çarpımını hesaplayan bir method oluşturun.
+
+    public static void tekrarsizCiftElemanlarinKupununCarpimi(List<Integer> list){
+
+      int carpim= list.stream().distinct().filter(t->t%2==0).map(t->t*t*t).reduce(1,(u,t)->t*u);
+        System.out.println(carpim);
+
 
 
     }
+
+    //7) List elemanları arasından en büyük değeri bulan bir method oluşturun.
+
+    public static void getMaxEleman(List<Integer> list){
+       Integer max= list.stream().distinct().reduce(list.get(0),(t,u)->t>u?t:u);
+        System.out.println(max);
+    }
+
+    //2.yol
+    public static void getMaxEleman2(List<Integer> list){
+       Integer max=list.stream().distinct().sorted().reduce(Integer.MIN_VALUE,(t,u)->u);
+        System.out.println("max = " + max);
+    }
+
+    //Ödev
+    //8)List elemanları arasından en küçük değeri bulan bir method oluşturun.(2 Yol ile)
+
+    //9) List elemanları arasından 7'den büyük, çift, en küçük değeri bulan bir method oluşturun.
+
+    public static void getYedidenBuyukCiftMin(List<Integer>list){
+
+        Integer min=list.stream().distinct().filter(t->t%2==0&&t>7).reduce(Integer.MAX_VALUE,(t,u)->t<u ? t : u);
+        System.out.println(min);
+    }
+
+    //2.yol
+    public static void getYedidenBuyukCiftMin2(List<Integer>list){
+
+        Integer min=list.stream().distinct().filter(t->t%2==0&&t>7).sorted(Comparator.reverseOrder()).reduce(Integer.MAX_VALUE,(t,u)->u);
+        System.out.println(min);
+    }
+
+    //3.yol
+    public static void getYedidenBuyukCiftMin3(List<Integer>list){
+
+        Integer min=list.stream().distinct().filter(t->t%2==0&&t>7).sorted().findFirst().get();
+        System.out.println(min);
+    }
+
+
+    //10) Ters sıralama ile tekrarsız ve 5'ten büyük elemanların yarı değerlerini(elamanın ikiye bölüm sonucunu)
+    // bulan bir method oluşturun.
+
+    public static void getTersSiralamaIleTekrarsizElemanlariYazdir(List<Integer>list){
+        List<Double> sonuc=list.stream().distinct().
+                filter(t->t>5).map(t->t/2.0).
+                sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+        System.out.println(sonuc);
+    }
+
+
 
 
 }
